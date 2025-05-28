@@ -15,3 +15,9 @@ Before starting, ensure you have the following installed:
 ```bash
 git clone https://github.com/aristides-suarez/streamflix-api.git
 cd streamflix-api
+
+```
+
+== Comentario para Jorge
+
+Aquí un fallo del IDE no me permitía copiar el texto del resultado. Mostraba la mitad como texto del resultaod y el resto como diálogo de Copilot.
