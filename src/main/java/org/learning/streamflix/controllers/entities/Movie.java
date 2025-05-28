@@ -6,16 +6,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Setter
 @Getter
 @Entity
+@Table(name = "movies")
 public class Movie {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @NotBlank(message = "Title is required")
   private String title;
@@ -48,11 +50,11 @@ public class Movie {
   @NotBlank(message = "Cover image URL is required")
   private String coverImageUrl;
 
-  @DecimalMin(value = "0.0", message = "Average rating must be at least 0.0")
-  @DecimalMax(value = "10.0", message = "Average rating must not exceed 10.0")
-  private double averageRating;
+//  @DecimalMin(value = "0.0", message = "Average rating must be at least 0.0")
+//  @DecimalMax(value = "10.0", message = "Average rating must not exceed 10.0")
+//  private Double averageRating;
 
-  private LocalDate addedDate;
+  private Date addedDate;
 
   @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Rating> ratings;

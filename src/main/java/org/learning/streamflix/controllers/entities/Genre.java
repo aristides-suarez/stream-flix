@@ -13,7 +13,7 @@ public class Genre {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
   @NotBlank(message = "Genre name is required")
   @Size(max = 50, message = "Genre name must not exceed 50 characters")

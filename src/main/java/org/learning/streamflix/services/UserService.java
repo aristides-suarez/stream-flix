@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Service
 public class UserService {
@@ -19,9 +20,8 @@ public class UserService {
 
   // Register a new user
   public User registerUser(User user) {
-    user.setEncryptedPassword(passwordEncoder.encode(user.getEncryptedPassword()));
-    user.setRegistrationDate(LocalDate.now());
-    user.setActive(true);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setRegistrationDate(java.sql.Date.valueOf(LocalDate.now()));
     user.setRole(User.Role.USER);
     return userRepository.save(user);
   }
@@ -30,7 +30,7 @@ public class UserService {
   public String authenticateUser(String email, String password) {
     User user = userRepository.findByEmail(email)
         .orElseThrow(() -> new RuntimeException("User not found"));
-    if (passwordEncoder.matches(password, user.getEncryptedPassword())) {
+    if (passwordEncoder.matches(password, user.getPassword())) {
       return "Authentication successful"; // Replace with token generation logic
     } else {
       throw new RuntimeException("Invalid credentials");
@@ -54,7 +54,7 @@ public class UserService {
   // Change password
   public void changePassword(Long userId, String newPassword) {
     User user = getUserProfile(userId);
-    user.setEncryptedPassword(passwordEncoder.encode(newPassword));
+    user.setPassword(passwordEncoder.encode(newPassword));
     userRepository.save(user);
   }
 

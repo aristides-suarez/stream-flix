@@ -8,19 +8,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Table(name = "ratings")
 public class Rating {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Integer id;
 
-  @DecimalMin(value = "0.0", message = "Rating must be at least 0.0")
-  @DecimalMax(value = "10.0", message = "Rating must not exceed 10.0")
-  private double score;
+  @DecimalMin(value = "0", message = "Rating must be at least 0")
+  @DecimalMax(value = "10", message = "Rating must not exceed 10")
+  private int score;
 
-  @NotBlank(message = "Review is required")
-  @Size(max = 500, message = "Review must not exceed 500 characters")
-  private String review;
+//  @NotBlank(message = "Review is required")
+//  @Size(max = 500, message = "Review must not exceed 500 characters")
+//  private String review;
 
   @ManyToOne
   @JoinColumn(name = "movie_id", nullable = false)

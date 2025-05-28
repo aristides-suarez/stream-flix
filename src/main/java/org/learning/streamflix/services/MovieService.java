@@ -41,7 +41,7 @@ public class MovieService {
     existingMovie.setDuration(movie.getDuration());
     existingMovie.setAgeRating(movie.getAgeRating());
     existingMovie.setCoverImageUrl(movie.getCoverImageUrl());
-    existingMovie.setAverageRating(movie.getAverageRating());
+//    existingMovie.setAverageRating(movie.getAverageRating());
     existingMovie.setAddedDate(movie.getAddedDate());
     return movieRepository.save(existingMovie);
   }
