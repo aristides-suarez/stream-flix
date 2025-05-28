@@ -1,0 +1,214 @@
+openapi: 3.0.1
+info:
+  title: Streamflix API
+  version: 1.0
+  description: API documentation for Streamflix application
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate a user and return a JWT token.
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: string
+        401:
+          description: Invalid credentials
+
+  /users/register:
+    post:
+      summary: Register a new user
+      description: Create a new user account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/profile:
+    get:
+      summary: Get user profile
+      description: Retrieve the profile of a user.
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /movies:
+    get:
+      summary: Get paginated movies
+      description: Retrieve a paginated list of movies.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Movies retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+    post:
+      summary: Create a new movie
+      description: Add a new movie to the database (admin only).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+      responses:
+        200:
+          description: Movie created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+
+  /ratings/add:
+    post:
+      summary: Add a rating to a movie
+      description: Submit a rating for a specific movie.
+      parameters:
+        - name: movieId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        200:
+          description: Rating added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        encryptedPassword:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMINISTRATOR
+        registrationDate:
+          type: string
+          format: date
+        active:
+          type: boolean
+
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        releaseYear:
+          type: integer
+        director:
+          type: string
+        genres:
+          type: array
+          items:
+            $ref: '#/components/schemas/Genre'
+        duration:
+          type: integer
+        ageRating:
+          type: string
+        coverImageUrl:
+          type: string
+        averageRating:
+          type: number
+          format: float
+        addedDate:
+          type: string
+          format: date
+
+    Genre:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    Rating:
+      type: object
+      properties:
+        id:
+          type: integer
+        score:
+          type: number
+          format: float
+        review:
+          type: string
+        movie:
+          $ref: '#/components/schemas/Movie'
+        user:
+          $ref: '#/components/schemas/User'
